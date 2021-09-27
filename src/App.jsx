@@ -93,7 +93,7 @@ export const App = () => {
           >
           </Input>
           <InputRightElement>
-            <Button onClick={getWeatherByName}>💩</Button>
+            <Button onClick={getWeatherByName}>Set</Button>
           </InputRightElement>
         </InputGroup>
       </Heading>
