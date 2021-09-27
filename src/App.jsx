@@ -4,8 +4,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Box,
-  Grid,
   Flex,
   Progress,
   Heading
@@ -35,8 +33,6 @@ export const App = () => {
 
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(({ coords }) => {
-      //console.log('getCurrentPosition', coords)
-
       setCoords({
         lat: coords.latitude,
         long: coords.longitude
@@ -46,12 +42,25 @@ export const App = () => {
 
   const getWeatherByCoords = async () => {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.REACT_APP_WEATHER_KEY}&lang=en&units=metric&lat=${lat}&lon=${long}`
+      `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.REACT_APP_WEATHER_KEY}&units=metric&lat=${lat}&lon=${long}`
     )
 
     const data = await response.json()
-    //console.log('getWeatherByCoords', data)
     setWeather(data)
+  }
+
+  const getWeatherByName = async () => {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${inputRef.current?.value}&units=metric&appid=${process.env.REACT_APP_WEATHER_KEY}`
+    )
+
+    const data = await response.json()
+
+    if (data.cod === '404') {
+      alert(data.message)
+    } else {
+      setWeather(data)
+    }
   }
 
   if (!weather) {
@@ -63,16 +72,6 @@ export const App = () => {
     )
   }
 
-  const getWeatherByName = () => {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputRef.current.value}&appid=${process.env.REACT_APP_WEATHER_KEY}`)
-      .then(result =>{
-        setWeather(result)
-      })
-    console.log(result);
-  
-  }
-
-
   return (
     <Flex
       h="full"
@@ -81,25 +80,22 @@ export const App = () => {
     >
       <Heading
       >
-        The temperature in {weather.name} is {weather.main.temp} degrees
-        <InputGroup
-          width={"500px"}>
+        The temperature in {weather.name} is {Math.round(weather.main.temp)}°
+        <InputGroup width="500px">
           <Input
             placeholder={weather.name}
             ref={inputRef}
+            onKeyDown={event => {
+              if (event.key === 'Enter') {
+                getWeatherByName()
+              }
+            }}
           >
           </Input>
           <InputRightElement>
-            <Button
-              onClick={getWeatherByName}
-            >
-              Set
-            </Button>
+            <Button onClick={getWeatherByName}>💩</Button>
           </InputRightElement>
         </InputGroup>
-      </Heading>
-      <Heading>
-
       </Heading>
     </Flex >
   )
