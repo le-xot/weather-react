@@ -1,0 +1,95 @@
+
+import React, { useState } from 'react';
+import {
+  Heading,
+  Button,
+  Text,
+  Flex,
+  Input,
+  InputRightElement,
+  InputGroup,
+} from '@chakra-ui/react';
+
+// доступ к API сервиса погоды
+
+function App() {
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setStatus('Geolocation is not supported by your browser');
+    } else {
+      setStatus('Locating...');
+      navigator.geolocation.getCurrentPosition((position) => {
+        setStatus(null);
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+      }, () => {
+        setStatus('Unable to retrieve your location');
+      });
+    }
+  }
+
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+  const [status, setStatus] = useState(null);
+
+
+  let value = 10
+  let city = "Moscow"
+
+  //baseUrl=`api.openweathermap.org/data/2.5/weather?q={City}&appid={REACT_APP_WEATHER_KEY}`  
+
+  return (
+
+    /* <div className="App">
+       <button onClick={getLocation}>Get Location</button>
+       <h1>Coordinates</h1>
+       <p>{status}</p>
+       {lat && <p>Latitude: {lat}</p>}
+       {lng && <p>Longitude: {lng}</p>}
+     </div>
+     */
+
+    <>
+      <Button
+        onClick={getLocation}
+      >
+        Get Location
+      </Button>
+
+      <Heading>
+        Coordinates
+      </Heading>
+      <Text>{status}</Text>
+      <Text>{lat && <p>Latitude: {lat}</p>}</Text>
+      <Text>{lng && <p>Longitude: {lng}</p>}</Text>
+    </>
+  );
+}
+
+export default App;
+
+
+/*
+<Flex
+    h="full"
+    align="center"
+    justify="center"
+    >
+      <Heading
+      >
+        The temperature in {city} is {value} degrees
+        <InputGroup
+          width={"500px"}>
+          <Input
+            placeholder={"Moscow"}>
+          </Input>
+          <InputRightElement>
+            <Button
+            >
+              Set
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </Heading>
+    </Flex>
+    */
