@@ -75,10 +75,18 @@ export const App = () => {
     )
   }
 
+  // We listen to the resize event
+  window.addEventListener('resize', () => {
+    // We execute the same script as before
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  });
+
   return (
-    <Center>
+    <Center w={"80%"}>
       <Flex justify="center" align="center" h="full" >
         <Box
+
           borderRadius={'20px'}
           backgroundColor='#333333'
           margin={'10px'}
@@ -87,7 +95,7 @@ export const App = () => {
           paddingBottom={'50px'}
           paddingTop={'50px'}>
 
-          <Heading> {weather.name}</Heading>
+          <Heading > {weather.name}</Heading>
           <Heading>{Math.round(weather.main.temp)}°</Heading>
           <InputGroup
             marginTop={'40px'}>
