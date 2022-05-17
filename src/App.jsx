@@ -79,6 +79,7 @@ export const App = () => {
     <Center>
       <Flex justify="center" align="center" h="full" >
         <Box
+          borderRadius={'20px'}
           backgroundColor='#333333'
           margin={'10px'}
           paddingLeft={'100px'}
