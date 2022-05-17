@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Loading } from './Loading'
 import {
   Center,
   Box,
@@ -7,7 +8,6 @@ import {
   InputGroup,
   InputRightElement,
   Flex,
-  Progress,
   Heading
 } from '@chakra-ui/react'
 
@@ -49,7 +49,6 @@ export const App = () => {
 
     const data = await response.json()
     setWeather(data)
-    console.log(lat, lon);
   }
 
   const getWeatherByName = async () => {
@@ -59,7 +58,7 @@ export const App = () => {
 
     const data = await response.json()
 
-    if (data.code === '404') {
+    if (data.cod === '404') {
       alert(data.message)
     } else {
       setWeather(data)
@@ -68,15 +67,14 @@ export const App = () => {
 
   if (!weather) {
     return (
-      <Flex justify="center" align="center" h="full" >
-        <Progress pos="absolute" w="full" top={0} size="xs" isIndeterminate />
-        <Heading>Loading...</Heading>
+      <Flex h="full" align="center" justify="center">
+        <Loading />
       </Flex>
     )
   }
 
   return (
-    <Center w={"80%"}>
+    <Center>
       <Flex justify="center" align="center" h="full" >
         <Box
 
@@ -88,10 +86,10 @@ export const App = () => {
           paddingBottom={'50px'}
           paddingTop={'50px'}>
 
-          <Heading > {weather.name}</Heading>
-          <Heading>{Math.round(weather.main.temp)}°</Heading>
+          <Heading> {weather.name}</Heading>
+          <Heading marginTop={'50px'} text>{Math.round(weather.main.temp)}°</Heading>
           <InputGroup
-            marginTop={'40px'}>
+            marginTop={'50px'}>
             <Input
               placeholder={weather.name}
               ref={inputRef}
